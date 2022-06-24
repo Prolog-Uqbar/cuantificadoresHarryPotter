@@ -15,6 +15,8 @@ pocion(suerteLiquida,trebol,5).
 mago(harry).
 mago(hermione).
 mago(snape).
+%mago(dumbledore).
+
 
 usa(harry,capaInvisibilidad,3).
 usa(harry,capaInvisibilidad,1).
@@ -24,7 +26,7 @@ usa(harry,multijugo,3).
 usa(snape,multijugo,5).
 usa(snape,inmobilus,5).
 usa(hermione,multijugo,3).
-usa(hermione,inmobilus,3).
+usa(hermione,sectumSempra,3).
 usa(luke,inmobilus,3).
 
 usaHechizo(Mago,Hechizo):-
@@ -41,5 +43,17 @@ hechizoOlvidado(Hechizo):-
     hechizo(Hechizo,_),
     not(hechizoUtilizado(Hechizo)).
 
-hechizoImperdible(Hechizo).
-hechizoPopular(Hechizo).
+hechizoImperdible(Hechizo):-
+    hechizo(Hechizo,_),
+    not(hayUnMagoQueSeLoPierde(Hechizo)).
+
+hayUnMagoQueSeLoPierde(Hechizo):-
+    mago(Mago),
+    not(usaHechizo(Mago,Hechizo)).
+
+hechizoPopular(Hechizo):-
+    hechizo(Hechizo,_),
+    forall(mago(Mago),usaHechizo(Mago,Hechizo)).
+
+especialistaEnPociones1(). % solo usa Pociones
+especialistaEnPociones2(). % usa todas las Pociones
